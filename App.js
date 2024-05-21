@@ -1,8 +1,27 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
+import {
+  setThreatListeners,
+  talsecStart,
+  removeThreatListeners,
+} from 'freerasp-react-native';
+import { actions } from "./freeRaspActions";
+import { config } from "./freeRaspConfig";
+
 const App = () => {
+
+  useEffect(() => {
+
+    setThreatListeners(actions);
+    talsecStart(config);
+  
+    return () => {
+      removeThreatListeners();
+    };
+  }, []);
+
   const [task, setTask] = useState("");
 
   const [taskList, setTaskList] = useState([]);
